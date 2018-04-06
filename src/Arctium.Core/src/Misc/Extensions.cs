@@ -25,12 +25,12 @@ namespace Arctium.Core
 
         public static bool IsSigned(this Type t) => Convert.ToBoolean(t.GetField("MinValue").GetRawConstantValue());
 
-        public static void AssignValue(this FieldInfo field, object obj, object value)
+        public static void AssignValue(this PropertyInfo field, object obj, object value)
         {
             object fieldValue;
 
             // Primitive types & numeric/string enum options.
-            if (field.FieldType.IsPrimitive || field.FieldType.IsEnum)
+            if (field.PropertyType.IsPrimitive || field.PropertyType.IsEnum)
             {
                 // Convert the config value to a string.
                 var stringValue = value.ToString();
@@ -39,15 +39,15 @@ namespace Arctium.Core
                 var numberBase = stringValue.StartsWith("0x") ? 16 : 10;
 
                 // Parse bool option by string.
-                if (field.FieldType == typeof(bool))
+                if (field.PropertyType == typeof(bool))
                     fieldValue = stringValue != "0";
                 // Parse enum options by string.
-                else if (field.FieldType.IsEnum && numberBase == 10)
-                    fieldValue = Enum.Parse(field.FieldType, stringValue);
+                else if (field.PropertyType.IsEnum && numberBase == 10)
+                    fieldValue = Enum.Parse(field.PropertyType, stringValue);
                 else
                 {
                     // Get the true type.
-                    var valueType = field.FieldType.IsEnum ? field.FieldType.GetEnumUnderlyingType() : field.FieldType;
+                    var valueType = field.PropertyType.IsEnum ? field.PropertyType.GetEnumUnderlyingType() : field.PropertyType;
 
                     // Check if it's a signed or unsigned type and convert it to the correct type.
                     if (valueType.IsSigned())
@@ -56,14 +56,14 @@ namespace Arctium.Core
                         fieldValue = Convert.ToUInt64(stringValue, numberBase).ChangeType(valueType);
                 }
             }
-            else if (field.FieldType != typeof(string) && field.FieldType.IsClass)
+            else if (field.PropertyType != typeof(string) && field.PropertyType.IsClass)
             {
-                fieldValue = Activator.CreateInstance(field.FieldType);
+                fieldValue = Activator.CreateInstance(field.PropertyType);
 
                 var fieldValues = (Dictionary<string, string>)value;
 
                 // Get class fields.
-                foreach (var f in field.FieldType.GetFields())
+                foreach (var f in field.PropertyType.GetProperties())
                 {
                     if (fieldValues.TryGetValue(f.Name, out var objFieldValue))
                         AssignValue(f, fieldValue, objFieldValue);

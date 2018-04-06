@@ -71,7 +71,7 @@ namespace Arctium.Core.Configuration
 
         static void AssignValues()
         {
-            var configEntryFields = typeof(TDerived).GetFields().Where(f => f.GetCustomAttribute<ConfigEntryAttribute>() != null);
+            var configEntryFields = typeof(TDerived).GetProperties().Where(f => f.GetCustomAttribute<ConfigEntryAttribute>() != null);
 
             foreach (var field in configEntryFields)
             {
