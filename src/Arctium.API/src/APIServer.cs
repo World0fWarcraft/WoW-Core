@@ -33,9 +33,6 @@ namespace Arctium.API
                 {
                     options.Listen(IPAddress.Parse(ApiConfig.BindHost), ApiConfig.BindPort, listenOptions =>
                     {
-                        // Disable nagle algorithm.
-                        listenOptions.NoDelay = false;
-
                         // Set the HTTP protocol.
                         // Default: Http2
                         listenOptions.Protocols = ApiConfig.Protocol;
