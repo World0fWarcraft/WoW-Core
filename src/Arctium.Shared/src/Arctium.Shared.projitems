@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>22B78F70-7D86-4CB6-8049-83395F2E5052</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Arctium.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Database\Aurora\Entities\Account.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Database\Aurora\Entities\Application.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Database\Aurora\Entities\BnetVersion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Database\Aurora\Entities\GameAccount.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Database\Aurora\Entities\Realm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Database\Aurora\Entities\RealmVersion.cs" />
+  </ItemGroup>
+</Project>
