@@ -1,27 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\..\default.props" />
   <PropertyGroup>
     <AssemblyName>arctium.manager</AssemblyName>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Arctium.Core\src\Arctium.Core.csproj" />
   </ItemGroup>
-
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="xcopy /Y /S /I /D &quot;$(SolutionDir)/files/certs/.&quot; &quot;$(SolutionDir)/build/$(Configuration)/$(Platform)/certs&quot;" Condition="'$(IsWindows)' == 'true'" />
     <Exec Command="xcopy /Y /S /I /D &quot;$(SolutionDir)/files/configs/.&quot; &quot;$(SolutionDir)/build/$(Configuration)/$(Platform)/configs&quot;" Condition="'$(IsWindows)' == 'true'" />
     <Exec Command="xcopy /Y /D &quot;$(SolutionDir)files\scripts\arctium-wow.bat&quot; &quot;$(SolutionDir)build\$(Configuration)\$(Platform)\arctium-wow.bat*&quot;" Condition="'$(IsWindows)' == 'true'" />
-
     <Exec Command="mkdir -p &quot;$(SolutionDir)/build/$(Configuration)/$(Platform)/certs&quot;&#xD;&#xA;cp -aru &quot;$(SolutionDir)/files/certs/.&quot; &quot;$(SolutionDir)/build/$(Configuration)/$(Platform)/certs&quot;" Condition="'$(IsLinux)' == 'true'" />
     <Exec Command="mkdir -p &quot;$(SolutionDir)/build/$(Configuration)/$(Platform)/configs&quot;&#xD;&#xA;cp -aru &quot;$(SolutionDir)/files/configs/.&quot; &quot;$(SolutionDir)/build/$(Configuration)/$(Platform)/configs&quot;" Condition="'$(IsLinux)' == 'true'" />
     <Exec Command="cp -u &quot;$(SolutionDir)/files/scripts/arctium-wow.sh&quot; &quot;$(SolutionDir)/build/$(Configuration)/$(Platform)/&quot;" Condition="'$(IsLinux)' == 'true'" />
-
     <Exec Command="mkdir -p &quot;$(SolutionDir)/build/$(Configuration)/$(Platform)/certs&quot;&#xD;&#xA;rsync -r -u &quot;$(SolutionDir)/files/certs/&quot; &quot;$(SolutionDir)/build/$(Configuration)/$(Platform)/certs&quot;" Condition="'$(IsMac)' == 'true'" />
     <Exec Command="mkdir -p &quot;$(SolutionDir)/build/$(Configuration)/$(Platform)/configs&quot;&#xD;&#xA;rsync -r -u &quot;$(SolutionDir)/files/configs/&quot; &quot;$(SolutionDir)/build/$(Configuration)/$(Platform)/configs&quot;" Condition="'$(IsMac)' == 'true'" />
     <Exec Command="cp -u &quot;$(SolutionDir)/files/scripts/arctium-wow.sh&quot; &quot;$(SolutionDir)/build/$(Configuration)/$(Platform)/&quot;" Condition="'$(IsMac)' == 'true'" />
   </Target>
-
 </Project>

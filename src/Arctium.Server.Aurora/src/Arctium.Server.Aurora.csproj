@@ -1,13 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\..\default.props" />
   <PropertyGroup>
     <AssemblyName>arctium.aurora</AssemblyName>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Arctium.Core\src\Arctium.Core.csproj" />
   </ItemGroup>
-
+  <Import Project="..\..\Arctium.Shared\src\Arctium.Shared.projitems" Label="Shared" />
 </Project>
