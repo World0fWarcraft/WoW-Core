@@ -11,14 +11,14 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0-preview2-final" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0-preview2-30558" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\..\deps\src\Lappa.ORM\src\Lappa.ORM\Lappa.ORM.csproj" />
     <ProjectReference Include="..\..\Arctium.Core\src\Arctium.Core.csproj">
       <Project>{D8FC6A84-F022-4305-B9BB-AFCB901118CD}</Project>
       <Name>Arctium.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0-preview1-final" />
   </ItemGroup>
   <Import Project="..\..\Arctium.Shared\src\Arctium.Shared.projitems" Label="Shared" />
 </Project>
