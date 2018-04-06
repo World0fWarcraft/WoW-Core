@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Arctium.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System;
 using System.IO;
 using System.Net;
 using Arctium.API.Misc;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace Arctium.API
 {
@@ -15,6 +17,10 @@ namespace Arctium.API
         {
             // Initialize the API server configuration file.
             ApiConfig.Initialize("configs/API.conf");
+
+            // Switch to HTTP 2.
+            if (ApiConfig.Protocol == HttpProtocols.Http2)
+                AppContext.SetSwitch("Switch.Microsoft.AspNetCore.Server.Kestrel.Experimental.Http2", isEnabled: true);
 
             BuildWebHost(args).Run();
         }
@@ -29,6 +35,10 @@ namespace Arctium.API
                     {
                         // Disable nagle algorithm.
                         listenOptions.NoDelay = false;
+
+                        // Set the HTTP protocol.
+                        // Default: Http2
+                        listenOptions.Protocols = ApiConfig.Protocol;
 
                         // Enable Https if enabled in config & the given certificate exists.
                         if (ApiConfig.Tls && File.Exists(ApiConfig.TlsCertificate))

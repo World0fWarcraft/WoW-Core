@@ -4,6 +4,7 @@
     <AssemblyName>arctium.api</AssemblyName>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
     <UserSecretsId>aspnet-Arctium.API-BAEC6AE9-A04E-4AF5-A8C0-D1CCB3B1F3C8</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>

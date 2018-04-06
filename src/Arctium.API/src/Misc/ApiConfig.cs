@@ -4,6 +4,7 @@
 using Arctium.Core.Configuration;
 using Arctium.Core.Database;
 using Lappa.ORM.Constants;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace Arctium.API.Misc
 {
@@ -20,6 +21,9 @@ namespace Arctium.API.Misc
 
         [ConfigEntry("API.Auth.Type", "")]
         public static string AuthType;
+
+        [ConfigEntry("API.Protocol", HttpProtocols.Http2)]
+        public static HttpProtocols Protocol;
 
         [ConfigEntry("API.Tls", false)]
         public static bool Tls;
