@@ -1,6 +1,6 @@
 # Arctium WoW Core
 
-[![Join Discord](https://img.shields.io/badge/discord-join-7289DA.svg)](https://discord.gg/3wcx5rK) [![Windows build status](https://ci.appveyor.com/api/projects/status/aaoegmcmp5emmom4/branch/master?svg=true)](https://ci.appveyor.com/project/Fabi/project-wow/branch/master) [![Linux Build Status](https://travis-ci.org/Arctium-Emulation/WoW-Core.svg?branch=master)](https://travis-ci.org/Arctium-Emulation/WoW-Core)
+[![Join Discord](https://img.shields.io/badge/discord-join-7289DA.svg)](https://discord.gg/3wcx5rK) [![Windows build status](https://ci.appveyor.com/api/projects/status/aaoegmcmp5emmom4/branch/master?svg=true)](https://ci.appveyor.com/project/Fabi/project-wow/branch/master) [![Linux Build Status](https://travis-ci.org/Arctium/WoW-Core.svg?branch=master)](https://travis-ci.org/Arctium/WoW-Core)
 
 ### What is WoW Core?
 
