@@ -1,3 +1,6 @@
 [submodule "deps/src/Lappa.ORM"]
 	path = deps/src/Lappa.ORM
 	url = https://github.com/Arctium-Software/LappaORM.git
+[submodule "deps/src/ExpressionSerializer"]
+	path = deps/src/ExpressionSerializer
+	url = https://github.com/Arctium/ExpressionSerializer
