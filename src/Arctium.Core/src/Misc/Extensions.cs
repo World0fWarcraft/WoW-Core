@@ -2,9 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Reflection;
+using System.Text;
 
 namespace Arctium.Core
 {
@@ -24,59 +23,6 @@ namespace Arctium.Core
         public static T MaxValue<T>(this Type primitiveType) where T : struct, IComparable => (T)primitiveType.GetField("MaxValue").GetRawConstantValue();
 
         public static bool IsSigned(this Type t) => Convert.ToBoolean(t.GetField("MinValue").GetRawConstantValue());
-
-        public static void AssignValue(this PropertyInfo field, object obj, object value)
-        {
-            object fieldValue;
-
-            // Primitive types & numeric/string enum options.
-            if (field.PropertyType.IsPrimitive || field.PropertyType.IsEnum)
-            {
-                // Convert the config value to a string.
-                var stringValue = value.ToString();
-
-                // Check for hex numbers (starting with 0x).
-                var numberBase = stringValue.StartsWith("0x") ? 16 : 10;
-
-                // Parse bool option by string.
-                if (field.PropertyType == typeof(bool))
-                    fieldValue = stringValue != "0";
-                // Parse enum options by string.
-                else if (field.PropertyType.IsEnum && numberBase == 10)
-                    fieldValue = Enum.Parse(field.PropertyType, stringValue);
-                else
-                {
-                    // Get the true type.
-                    var valueType = field.PropertyType.IsEnum ? field.PropertyType.GetEnumUnderlyingType() : field.PropertyType;
-
-                    // Check if it's a signed or unsigned type and convert it to the correct type.
-                    if (valueType.IsSigned())
-                        fieldValue = Convert.ToInt64(stringValue, numberBase).ChangeType(valueType);
-                    else
-                        fieldValue = Convert.ToUInt64(stringValue, numberBase).ChangeType(valueType);
-                }
-            }
-            else if (field.PropertyType != typeof(string) && field.PropertyType.IsClass)
-            {
-                fieldValue = Activator.CreateInstance(field.PropertyType);
-
-                var fieldValues = (Dictionary<string, string>)value;
-
-                // Get class fields.
-                foreach (var f in field.PropertyType.GetProperties())
-                {
-                    if (fieldValues.TryGetValue(f.Name, out var objFieldValue))
-                        AssignValue(f, fieldValue, objFieldValue);
-                }
-            }
-            else
-            {
-                // String values.
-                fieldValue = value;
-            }
-
-            field.SetValue(obj, fieldValue);
-        }
 
         // TODO: Add long, ulong, float, double support.
         public static T[] FillRandom<T>(this T[] array) where T : struct, IComparable
@@ -107,7 +53,7 @@ namespace Arctium.Core
         {
             var data = new byte[s.Length / 2];
 
-            for (int i = 0; i < s.Length; i += 2)
+            for (var i = 0; i < s.Length; i += 2)
                 data[i / 2] = Convert.ToByte(s.Substring(i, 2), 16);
 
             return data;
@@ -117,7 +63,7 @@ namespace Arctium.Core
 
         public static bool Compare(this byte[] b, byte[] b2)
         {
-            for (int i = 0; i < b2.Length; i++)
+            for (var i = 0; i < b2.Length; i++)
                 if (b[i] != b2[i])
                     return false;
 
@@ -126,7 +72,7 @@ namespace Arctium.Core
 
         public static bool Compare(this int[] b, int[] b2)
         {
-            for (int i = 0; i < b2.Length; i++)
+            for (var i = 0; i < b2.Length; i++)
                 if (b[i] != b2[i])
                     return false;
 
@@ -151,12 +97,12 @@ namespace Arctium.Core
 
         public static string ToHexString(this byte[] data)
         {
-            var hex = "";
+            var hex = new StringBuilder();
 
             foreach (var b in data)
-                hex += $"{b:X2}";
+                hex.Append($"{b:X2}");
 
-            return hex;
+            return hex.ToString();
         }
 
         public static BigInteger ToBigInteger(this byte[] value, bool reverse = false)

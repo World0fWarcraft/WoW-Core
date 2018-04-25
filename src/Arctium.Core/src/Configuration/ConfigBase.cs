@@ -71,7 +71,7 @@ namespace Arctium.Core.Configuration
 
         static void AssignValues()
         {
-            var configEntryFields = typeof(TDerived).GetProperties().Where(f => f.GetCustomAttribute<ConfigEntryAttribute>() != null);
+            var configEntryFields = typeof(TDerived).GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static).Where(f => f.GetCustomAttribute<ConfigEntryAttribute>() != null);
 
             foreach (var field in configEntryFields)
             {
@@ -88,8 +88,65 @@ namespace Arctium.Core.Configuration
 
                 // Assign config options if found.
                 if (fieldValue == null)
-                    field.AssignValue(null, value);
+                    AssignValue(field, null, value);
             }
+        }
+
+        static void AssignValue(PropertyInfo field, object obj, object value)
+        {
+            object fieldValue;
+
+            // Primitive types & numeric/string enum options.
+            if (field.PropertyType.IsPrimitive || field.PropertyType.IsEnum)
+            {
+                // Convert the config value to a string.
+                var stringValue = value.ToString();
+
+                // Check for hex numbers (starting with 0x).
+                var numberBase = stringValue.StartsWith("0x") ? 16 : 10;
+
+                // Parse bool option by string.
+                if (field.PropertyType == typeof(bool))
+                    fieldValue = stringValue != "0";
+                // Parse enum options by string.
+                else if (field.PropertyType.IsEnum && numberBase == 10)
+                    fieldValue = Enum.Parse(field.PropertyType, stringValue);
+                else
+                {
+                    // Get the true type.
+                    var valueType = field.PropertyType.IsEnum ? field.PropertyType.GetEnumUnderlyingType() : field.PropertyType;
+
+                    // Check if it's a signed or unsigned type and convert it to the correct type.
+                    if (valueType.IsSigned())
+                        fieldValue = Convert.ToInt64(stringValue, numberBase).ChangeType(valueType);
+                    else
+                        fieldValue = Convert.ToUInt64(stringValue, numberBase).ChangeType(valueType);
+                }
+            }
+            else if (field.PropertyType != typeof(string) && field.PropertyType.IsClass)
+            {
+                fieldValue = Activator.CreateInstance(field.PropertyType);
+
+                var fieldValues = (Dictionary<string, string>)value;
+
+                // Get class fields.
+                foreach (var f in field.PropertyType.GetProperties())
+                {
+                    if (fieldValues.TryGetValue(f.Name, out var objFieldValue))
+                        AssignValue(f, fieldValue, objFieldValue);
+                }
+            }
+            else
+            {
+                // String values.
+                fieldValue = value;
+            }
+
+            // Use the properties backing field to set the value.
+            var backingFieldName = $"<{field.Name}>k__BackingField";
+            var backingField = field.DeclaringType.GetTypeInfo().DeclaredFields.SingleOrDefault(f => f.Name == backingFieldName);
+
+            backingField?.SetValue(obj, fieldValue);
         }
     }
 }
