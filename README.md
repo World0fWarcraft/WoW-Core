@@ -18,7 +18,7 @@ The WoW-Core source is licensed under the [MIT](https://github.com/Arctium/WoW-C
 ## Building
 
 ### Build Prerequisites
-* [.NET Core SDK 2.1.300-preview3-008443 or later](https://github.com/dotnet/cli#installers-and-binaries)
+* [.NET Core SDK 2.1.300-rc1 or later](https://www.microsoft.com/net/download/dotnet-core/sdk-2.1.300-rc1)
 
 ### Working IDEs (optional)
 * Cross Platform: Jetbrains Rider (Build 2018.1 EAP 181.4379.538) EAP or later
